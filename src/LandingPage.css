@@ -1,0 +1,11 @@
+.col-md-12{
+    border: 1px solid black;
+    
+}
+.cal{
+    width: 300px;
+    height: 300px;
+}
+.drpdwn{
+    visibility: hidden;
+}
