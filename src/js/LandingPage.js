@@ -8,6 +8,7 @@ import Calendar from './Calendar';
 import Button from './Button';
 import Label from './Label';
 import {data} from './testdata';
+import Calendar1 from './Calendar1';
 
 
 
@@ -31,7 +32,9 @@ class LandingPage extends Component{
     onDropDownElementClick(event){
         console.log(event.target.innerText);
     }
-    
+    daySelected(event){
+        console.log(event)
+    }
     render(){
         return(
             <Fragment>
@@ -48,7 +51,7 @@ class LandingPage extends Component{
                             
                         </div>
                         <div className='col-lg-6 col-md-12 col-sm-12 col-xs-12'>
-                        {/* <Calendar className='cal'/> */}
+                        <Calendar1 selectedDay={this.daySelected}/>
                         </div>
                         <div className='col-lg-3 col-md-12 col-sm-12 col-xs-12'>
                         <Button/>
