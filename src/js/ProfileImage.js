@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Logo from './logo.png';
-import './ProfileImage.css';
+import Logo from '../img/logo.png';
+import '../css/ProfileImage.css';
 
 const ProfileImage=()=>{
     return(

@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './js/serviceWorker';
 import 'tachyons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginPage from './LoginPage';
-import LandingPage from './LandingPage';
-import Calendar from './Calendar';
+import LoginPage from './js/LoginPage';
+import LandingPage from './js/LandingPage';
+import Calendar from './js/Calendar';
 
 
 

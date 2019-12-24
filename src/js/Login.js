@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import logo from './logo.png';
+import logo from '../img/logo.png';
 
 const Login=()=>{
 return(

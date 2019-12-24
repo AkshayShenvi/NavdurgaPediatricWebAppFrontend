@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import Navbar from './Navbar';
-import './LandingPage.css';
+import '../css/LandingPage.css';
 import ListGroup from './ListGroup';
 import ProfileImage from './ProfileImage';
 import DropdownSelect from './DropdownSelect';

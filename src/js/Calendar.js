@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { range } from "moment-range";
-import "./Calendar.css";
+import "../css/Calendar.css";
 export default class Calendar extends React.Component {
   weekdayshort = moment.weekdaysShort();
 
