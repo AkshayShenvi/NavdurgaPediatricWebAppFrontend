@@ -1,212 +1,139 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import Paper from '@material-ui/core/Paper';
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import {
+  Scheduler,
+  WeekView,
+  MonthView,
+  DayView,
+  Appointments,
+  Toolbar,
+  ViewSwitcher
+} from '@devexpress/dx-react-scheduler-material-ui';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import { withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import { Fragment } from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import moment from 'moment';
-import Day from './Day';
-import DayOfWeek from './DayOfWeek';
-import Week from './Week';
+// import appointments from '../../../demo-data/today-appointments';
 
-class Calendar extends Component {
+const style = theme => ({
+  todayCell: {
+    backgroundColor: fade(theme.palette.info.main, 0.1),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.info.light, 0.14),
+    },
+    '&:focus': {
+      backgroundColor: fade(theme.palette.info.dark, 0.16),
+    },
+  },
+  weekendCell: {
+    backgroundColor: fade(theme.palette.secondary.main, 0.04),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.secondary.light, 0.04),
+    },
+    '&:focus': {
+      backgroundColor: fade(theme.palette.secondary.dark, 0.04),
+    },
+  },
+  today: {
+    backgroundColor: fade(theme.palette.primary.dark, 0.16),
+  },
+  weekend: {
+    backgroundColor: fade(theme.palette.secondary.dark, 0.06),
+  },
+});
+
+const TimeTableCellBase = ({ classes, ...restProps }) => {
+  const { startDate } = restProps;
+  const date = new Date(startDate);
+  if (date.getDate() === new Date().getDate()) {
+    return <WeekView.TimeTableCell {...restProps} className={classes.todayCell} />;
+  } if (date.getDay() === 0 || date.getDay() === 6) {
+    return <WeekView.TimeTableCell {...restProps} className={classes.weekendCell} />;
+  } return <WeekView.TimeTableCell {...restProps} />;
+};
+
+const TimeTableCell = withStyles(style, { name: 'TimeTableCell' })(TimeTableCellBase);
+
+const DayScaleCellBase = ({ classes, ...restProps }) => {
+  const { startDate, today } = restProps;
+  if (today) {
+    return <WeekView.DayScaleCell {...restProps} className={classes.today} />;
+  } if (startDate.getDay() === 0 || startDate.getDay() === 6) {
+    return <WeekView.DayScaleCell {...restProps} className={classes.weekend} />;
+  } return <WeekView.DayScaleCell {...restProps} />;
+};
+
+const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
+
+// const ExternalViewSwitcher = ({
+//   currentViewName,
+//   onChange,
+// }) => (
+//   <RadioGroup
+//     aria-label="Views"
+//     style={{ flexDirection: 'row' }}
+//     name="views"
+//     value={currentViewName}
+//     onChange={onChange}
+//   >
+//     <FormControlLabel value="WeekView" control={<Radio />} label="Week" />
+//     <FormControlLabel value="DayView" control={<Radio />} label="Day" />
+//     <FormControlLabel value="MonthView" control={<Radio />} label="Month" />
+//   </RadioGroup>
+// );
+
+export default class Calendar extends React.PureComponent {
   constructor(props) {
     super(props);
-    let date = props.date;
-    let month;
-    if (date) {
-      month = props.date;
-    } else {
-      month = props.month;
-    }
+
     this.state = {
-      date: date,
-      month: month,
+      // data: appointments,
+      currentViewName: 'Month',
+      data:props.data
     };
-
-    this.previous = this.previous.bind(this);
-    this.next = this.next.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    console.log(this.state.data)
+    this.currentViewNameChange = (e) => {
+      this.setState({ currentViewName: e.target.value });
+    };
   }
 
-  componentWillMount() {
-    moment.locale(this.props.locale);
-
-    if (!!this.state.date) {
-      this.state.date.locale(this.props.locale);
-    }
-
-    this.state.month.locale(this.props.locale);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    moment.locale(this.props.locale);
-
-    if (!!nextState.date) {
-      nextState.date.locale(this.props.locale);
-    }
-
-    nextState.month.locale(this.props.locale);
-  }
-
-  handleClick(date) {
-    const flag = this.props.onSelect(date, this.state.date, this.state.month);
-
-    if (flag === true) {
-      this.setState({
-        date: moment(date),
-      });
-    } else if (flag === false) {
-      this.setState({
-        date: null,
-      });
-    }
-  }
-
-  previous() {
-    this.setState({
-      month: moment(this.state.month).subtract(1, 'month'),
-    });
-  }
-
-  next() {
-    this.setState({
-      month: moment(this.state.month).add(1, 'month'),
-    });
-  }
 
   render() {
-    const { startOfWeekIndex, dayRenderer, dayOfWeekFormat } = this.props;
-
-    const classes = ['Calendar', this.props.className].join(' ');
-
-    const today = moment();
-
-    const format = dayOfWeekFormat &&
-                    dayOfWeekFormat !== '' &&
-                    moment(today, dayOfWeekFormat).isValid() ? dayOfWeekFormat : 'dd'
-
-    const date = this.state.date;
-    const month = this.state.month;
-
-    const current = month
-      .clone()
-      .startOf('month')
-      .day(startOfWeekIndex);
-    if (current.date() > 1 && current.date() < 7) {
-      current.subtract(7, 'd');
-    }
-
-    const end = month
-      .clone()
-      .endOf('month')
-      .day(7 + startOfWeekIndex);
-
-    if (end.date() > 7) {
-      end.subtract(7, 'd');
-    }
-
-    const elements = [];
-    let days = [];
-    let week = 1;
-    let i = 1;
-    const daysOfWeek = [];
-    const day = current.clone();
-    for (let j = 0; j < 7; j++) {
-      const dayOfWeekKey = 'dayOfWeek' + j;
-      daysOfWeek.push(<DayOfWeek key={dayOfWeekKey} date={day.clone()} format={format} />);
-      day.add(1, 'days');
-    }
-    while (current.isBefore(end)) {
-      let dayClasses = this.props.dayClasses(current);
-      if (!current.isSame(month, 'month')) {
-        dayClasses = dayClasses.concat(['other-month']);
-      }
-      let props = {
-        date: current.clone(),
-        selected: date,
-        month: month,
-        today: today,
-        classes: dayClasses,
-        handleClick: this.handleClick,
-      };
-
-      let children;
-      if (!!dayRenderer) {
-        children = dayRenderer(props);
-      }
-
-      days.push(
-        <Day key={i++} {...props}>
-          {children}
-        </Day>
-      );
-      current.add(1, 'days');
-      if (current.day() === startOfWeekIndex) {
-        let weekKey = 'week' + week++;
-        elements.push(<Week key={weekKey}>{days}</Week>);
-        days = [];
-      }
-    }
-
-    let nav;
-
-    if (this.props.useNav) {
-      nav = (
-        <tr className="month-header">
-          <th className="nav previous">
-            <button className="nav-inner" onClick={this.previous} type="button">
-              «
-            </button>
-          </th>
-          <th colSpan="5">
-            <span className="month">{month.format('MMMM')}</span>{' '}
-            <span className="year">{month.format('YYYY')}</span>
-          </th>
-          <th className="nav next">
-            <button className="nav-inner" onClick={this.next} type="button">
-              »
-            </button>
-          </th>
-        </tr>
-      );
-    } else {
-      nav = (
-        <tr className="month-header">
-          <th colSpan="7">
-            <span className="month">{month.format('MMMM')}</span>{' '}
-            <span className="year">{month.format('YYYY')}</span>
-          </th>
-        </tr>
-      );
-    }
+    const { data, currentViewName } = this.state;
 
     return (
-      <table className={classes}>
-        <thead>{nav}</thead>
-        <thead>
-          <tr className="days-header">{daysOfWeek}</tr>
-        </thead>
-        <tbody>{elements}</tbody>
-      </table>
+      <Fragment>
+        {/* <ExternalViewSwitcher
+            currentViewName={currentViewName}
+            onChange={this.currentViewNameChange}
+          /> */}
+        <Paper>
+          <Scheduler
+            data={data}
+            height={600}
+          >
+            <ViewState />
+            <DayView
+            startDayHour={9}
+            endDayHour={18}
+          />
+            <WeekView
+              startDayHour={9}
+              endDayHour={19}
+              timeTableCellComponent={TimeTableCell}
+              dayScaleCellComponent={DayScaleCell}
+            />
+            <MonthView />
+            <Toolbar />
+            <ViewSwitcher />
+            <Appointments />
+          </Scheduler>
+        </Paper>
+      </Fragment>
     );
   }
 }
-Calendar.defaultProps = {
-  month: moment(),
-  dayClasses: () => [],
-  useNav: true,
-  locale: 'en',
-  startOfWeekIndex: 0,
-  dayOfWeekFormat: 'dd',
-};
-Calendar.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  date: PropTypes.object,
-  month: PropTypes.object,
-  dayClasses: PropTypes.func,
-  useNav: PropTypes.bool,
-  locale: PropTypes.string,
-  startOfWeekIndex: PropTypes.number,
-  dayRenderer: PropTypes.func,
-  dayOfWeekFormat: PropTypes.string,
-};
-
-export default Calendar;

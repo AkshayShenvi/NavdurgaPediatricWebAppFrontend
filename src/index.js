@@ -7,7 +7,7 @@ import 'tachyons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './js/LoginPage';
 import LandingPage from './js/LandingPage';
-import Calendar from './js/Calendar2';
+   
 
 
 
