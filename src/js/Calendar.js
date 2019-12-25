@@ -7,6 +7,7 @@ import {
   MonthView,
   DayView,
   Appointments,
+  DateNavigator,
   Toolbar,
   ViewSwitcher
 } from '@devexpress/dx-react-scheduler-material-ui';
@@ -129,6 +130,7 @@ export default class Calendar extends React.PureComponent {
             />
             <MonthView />
             <Toolbar />
+            <DateNavigator />
             <ViewSwitcher />
             <Appointments />
           </Scheduler>
