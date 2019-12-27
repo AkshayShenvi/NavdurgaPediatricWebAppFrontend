@@ -1,52 +1,105 @@
 import React, { Fragment } from 'react';
 import logo from '../img/logo.png';
 
-const Login=()=>{
-return(
-<Fragment className="m5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-    <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossOrigin="anonymous"
-    />
+class Login extends React.Component {
 
-    <article >
+    constructor(props){
+        super(props);
+        this.state = {
+            userId : '',
+            password : ''
 
-        <div className="tc dib">
-            <img src={logo} className="br-100 h4 w4 dib ba b--black-05 pa2 " title="Logo" alt="logo"></img>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="EmailAddress">Email address</label>
-                    <input type="text" className="form-control grow" id="username" aria-describedby="username" placeholder="Enter Username"/>
-                    <small id="emailHelp" className="form-text text-muted">Never share your username with anyone else.</small>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" className="form-control grow" id="exampleInputPassword1" placeholder="Enter Password"/>
-                </div>
-                <div className="form-group form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                    <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </article>
-    <script src="https://unpkg.com/react/umd/react.production.min.js"  />
+        }
+    }
 
-    <script
-    src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"
+    onUserIdChange = (event) => {
+        this.setState({userId : event.target.value});
+    }    
+
+    onPasswordChange = (event) => {
+        this.setState({password : event.target.value});
+    }    
+
+    onSubmitSignIn = () => {
+       
+        console.log(this.state);
+        
+        fetch('https://localhost:5000/login', {
+            method : 'post',
+            headers :{ 'Content-Type' : 'application/json'},
+            body : JSON.stringify({
+                userId : this.state.userId,
+                password : this.state.password
+            })
+        })
+        .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data === 'success'){
+                    this.props.onRouteChange('home');
+                }            
+            }).catch(error => {
+                
+                console.error(error);    
+            })
+        
+        
+        // fetch('http://localhost:5000/', {
+        //     headers : { 
+        //       'Content-Type': 'application/json',
+        //       'Accept': 'application/json'
+        //      }
+      
+        //   })
+        // .then(response => response.json())
+        // .then(data => {
+        //     this.props.onRouteChange('home');
+        // }).catch(error => {
+                
+        //             console.error(error);    
+        //         })
     
-    />
+    }
 
-    <script
-    src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
     
-    />
+    render(){
+        const { onRouteChange } = this.props; 
+    return (
+        <Fragment>
 
-    <script>var Alert = ReactBootstrap.Alert;</script>
-</Fragment>
-);
+            <article className="br2 ba dark-gray pa3 b--black-10 mv4 w-100 w-150-m w-25-l mw6 center">
+
+                <div className="tc dib">
+                    <img src={logo} className="br-100 h4 w4 dib ba b--black-05 pa2 " title="Logo" alt="logo"></img>
+                    <form className="measure">
+                        <div className="form-group">
+
+                            <input type="text" 
+                                className="form-control grow" 
+                                id="username"
+                                aria-describedby="username" 
+                                placeholder="Enter Username" 
+                                onChange = {this.onUserIdChange} />
+                            <small id="emailHelp" className="form-text text-muted">Never share your username with anyone else.</small>
+                        </div>
+                        <div className="form-group">
+
+                            <input type="password" 
+                                className="form-control grow" 
+                                id="exampleInputPassword1" 
+                                placeholder="Enter Password" 
+                                onChange = {this.onPasswordChange}/>
+                        </div>
+                        <div className="form-group form-check">
+                            <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                            <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
+                        </div>
+                        <button type="submit" onClick={ this.onSubmitSignIn } className="btn btn-primary">Log In</button>
+                    </form>
+                </div>
+            </article>
+        </Fragment>
+    );
+    }
 }
 export default Login
