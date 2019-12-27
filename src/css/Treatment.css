@@ -1,0 +1,18 @@
+.groups {
+ display : flex;
+
+}
+
+.inputs {
+   width: 400px;
+   margin-left: 10px;
+   margin-right: 10px;
+    
+}
+
+.forms{
+    margin-top: 50px;
+    margin-bottom: 10px;
+    width : 900px;
+    height: 100px;
+}

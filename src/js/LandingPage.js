@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import Navbar from './Navbar';
+
 import '../css/LandingPage.css';
 import ListGroup from './ListGroup';
 import ProfileImage from './ProfileImage';
@@ -38,7 +38,7 @@ class LandingPage extends Component{
     render(){
         return(
             <Fragment>
-                <Navbar/>
+               
                 <div className="countainer">
                     <div className='row'>
                         <div className='col-lg-3 col-md-12 col-sm-12 col-xs-12 tc'>
