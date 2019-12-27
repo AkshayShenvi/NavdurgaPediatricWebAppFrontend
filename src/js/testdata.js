@@ -1,52 +1,27 @@
 export const data=[
     {
-        "name" : "Akshay",
-        "appointments" :[
-                {
-                    "id":1,
-                    "date":"10-12-2019"
-                    
-                },
-                {
-                    "id":2,
-                    "date":"23-1-2020"
-                },
-                {
-                    "id":3,
-                    "date":"2-11-2020"
-                }
-            ]
+        id:1,
+        title : "Akshay",
+        Doctor:"ABCD",
+        startDate: "2019-12-27T14:00",
+        endDate:"2019-12-27T15:00"
         
     },
     {
-        "name" : "Yugesha",
-        "appointments" :[
-                {
-                    "id":5,
-                    "date":"10-12-2019"
-                },
-                {
-                    "id":7,
-                    "date":"23-1-2020"
-                }
-                
-            ]
+        id:2,
+        title : "Yugesha",
+        Doctor:"ABCD",
+        startDate: "2019-12-27T16:00",
+        endDate:"2019-12-27T17:00"
         
     },
     {
-        "name" : "Akshata",
-        "appointments" :[
-                {
-                    "id":4,
-                    "date":"10-12-2019"
-                },
-                {
-                    "id":6,
-                    "date":"23-1-2020"
-                }
-                
-            ]
+        id:3,
+        title : "Akshata",
+        Doctor:"AAB",
+        startDate: "2019-12-27T18:00",
+        endDate:"2019-12-27T19:00"
         
-    }
+    },
 
 ]

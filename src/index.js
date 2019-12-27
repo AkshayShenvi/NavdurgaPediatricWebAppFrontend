@@ -7,6 +7,8 @@ import 'tachyons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './js/LoginPage';
 import LandingPage from './js/LandingPage';
+import Calendar from './js/Calendar';
+import Test from './js/Testdummypage';
    
 
 
@@ -15,7 +17,7 @@ import LandingPage from './js/LandingPage';
 
 
 
-ReactDOM.render(<LandingPage/>, document.getElementById('root'));
+ReactDOM.render(<Test/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

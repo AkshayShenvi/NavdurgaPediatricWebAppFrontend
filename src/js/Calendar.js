@@ -1,14 +1,18 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   WeekView,
   MonthView,
   DayView,
   Appointments,
+  DragDropProvider,
   DateNavigator,
+  TodayButton,
+  AppointmentTooltip,
   Toolbar,
+  AppointmentForm,
   ViewSwitcher
 } from '@devexpress/dx-react-scheduler-material-ui';
 import Radio from '@material-ui/core/Radio';
@@ -17,9 +21,13 @@ import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Fragment } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextField from '@material-ui/core/TextField';
+import 'tachyons';
+import { Button } from '@material-ui/core';
+
 
 // import appointments from '../../../demo-data/today-appointments';
-
+// Calendaar Styling
 const style = theme => ({
   todayCell: {
     backgroundColor: fade(theme.palette.info.main, 0.1),
@@ -47,92 +55,117 @@ const style = theme => ({
   },
 });
 
-const TimeTableCellBase = ({ classes, ...restProps }) => {
-  const { startDate } = restProps;
-  const date = new Date(startDate);
-  if (date.getDate() === new Date().getDate()) {
-    return <WeekView.TimeTableCell {...restProps} className={classes.todayCell} />;
-  } if (date.getDay() === 0 || date.getDay() === 6) {
-    return <WeekView.TimeTableCell {...restProps} className={classes.weekendCell} />;
-  } return <WeekView.TimeTableCell {...restProps} />;
-};
 
-const TimeTableCell = withStyles(style, { name: 'TimeTableCell' })(TimeTableCellBase);
 
-const DayScaleCellBase = ({ classes, ...restProps }) => {
-  const { startDate, today } = restProps;
-  if (today) {
-    return <WeekView.DayScaleCell {...restProps} className={classes.today} />;
-  } if (startDate.getDay() === 0 || startDate.getDay() === 6) {
-    return <WeekView.DayScaleCell {...restProps} className={classes.weekend} />;
-  } return <WeekView.DayScaleCell {...restProps} />;
-};
+// const FormLayout=()=>{
+//   return(
+  
+//     <AppointmentForm.BasicLayout>
+      
+      
+//     </AppointmentForm.BasicLayout>
+    
+//   )}
 
-const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
+const today = new Date();
+// const allowDrag=({id})=>{
 
-// const ExternalViewSwitcher = ({
-//   currentViewName,
-//   onChange,
-// }) => (
-//   <RadioGroup
-//     aria-label="Views"
-//     style={{ flexDirection: 'row' }}
-//     name="views"
-//     value={currentViewName}
-//     onChange={onChange}
-//   >
-//     <FormControlLabel value="WeekView" control={<Radio />} label="Week" />
-//     <FormControlLabel value="DayView" control={<Radio />} label="Day" />
-//     <FormControlLabel value="MonthView" control={<Radio />} label="Month" />
-//   </RadioGroup>
-// );
+// }
+const allowDrag = () => {return true};
+const appointmentComponent=(props)=>{
+  if (allowDrag){
+    return <Appointments.Appointment {...props} />;
+  }
+
+}
+
+
 
 export default class Calendar extends React.PureComponent {
+  
   constructor(props) {
+    var today= new Date();
     super(props);
 
     this.state = {
-      // data: appointments,
+      data: this.props.pdata,
       currentViewName: 'Month',
-      data:props.data
-    };
-    console.log(this.state.data)
-    this.currentViewNameChange = (e) => {
-      this.setState({ currentViewName: e.target.value });
+      
+      currentDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+
     };
   }
+    
+ 
+commitChanges({added,changed, deleted}){
+  this.setState((state)=>{
+      var {data}=state;
+      if (added) {
+        const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
+        data = [...data, { id: startingAddedId, ...added }];
+      }
+      if(changed){
+        data=data.map(appointment=>(changed[appointment.id]?{ ...appointment, ...changed[appointment.id] } : appointment));
+        console.log(data)
+      }
+      if (deleted !== undefined) {
+        data = data.filter(appointment => appointment.id !== deleted);
+      }
+      return {data};
+  });
+  
 
-
+}
+  
   render() {
-    const { data, currentViewName } = this.state;
+    const { data, currentDate } = this.state;
 
     return (
       <Fragment>
-        {/* <ExternalViewSwitcher
-            currentViewName={currentViewName}
-            onChange={this.currentViewNameChange}
-          /> */}
-        <Paper>
+        {/* {console.log(this.state.data)} */}
+        <Paper >
+          <div className="pa4 br3 shadow-5 "> 
+          {'Calendar Component Loads Properly'}
+          </div>
+          
           <Scheduler
-            data={data}
-            height={600}
+          height={'auto'}
+          data={data}
           >
-            <ViewState />
+            
+            <ViewState
+            defaultCurrentDate={currentDate}/>
+            <EditingState 
+            onCommitChanges={this.commitChanges}
+            />
+            <IntegratedEditing />
             <DayView
-            startDayHour={9}
-            endDayHour={18}
-          />
+              startDayHour={6}
+              endDayHour={22}
+              
+            />
             <WeekView
-              startDayHour={9}
-              endDayHour={19}
-              timeTableCellComponent={TimeTableCell}
-              dayScaleCellComponent={DayScaleCell}
+            startDayHour={6}
+            endDayHour={22}
             />
             <MonthView />
             <Toolbar />
             <DateNavigator />
-            <ViewSwitcher />
-            <Appointments />
+            <TodayButton />
+            <ViewSwitcher 
+            defaultCurrentDate={currentDate}/>
+            <Appointments
+              appointmentComponent={appointmentComponent}
+            />
+            <AppointmentTooltip
+            showCloseButton
+            showOpenButton
+            />
+            <DragDropProvider
+            allowDrag={allowDrag}
+          />
+            <AppointmentForm
+            children={appointmentformchildren}/>
           </Scheduler>
         </Paper>
       </Fragment>
