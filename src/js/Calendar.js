@@ -79,6 +79,7 @@ const appointmentComponent=(props)=>{
 
 }
 
+const appointmentFormChildren=()=>{}
 
 
 export default class Calendar extends React.PureComponent {
@@ -165,7 +166,7 @@ commitChanges({added,changed, deleted}){
             allowDrag={allowDrag}
           />
             <AppointmentForm
-            children={appointmentformchildren}/>
+            />
           </Scheduler>
         </Paper>
       </Fragment>

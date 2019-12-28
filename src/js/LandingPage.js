@@ -6,28 +6,17 @@ import ProfileImage from './ProfileImage';
 import DropdownSelect from './DropdownSelect';
 import Button from './Button';
 import Label from './Label';
-import {data} from './testdata';
 import Calendar from './Calendar';
+import {data} from './testdata';
 import TodaysAppointmentList from './TodaysAppointmentList';
 
 
 
-const dropDownList=data.map((doctors,i)=>{
-    return <ListGroup 
-        key={i} 
-        name={data[i].name} 
-        appointment={data[i].appointments}
-        />
-    
-    })  
-
-
 class LandingPage extends Component{
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
-            data: data,
-
+            pdata:data
         }
     }
     
@@ -46,12 +35,13 @@ class LandingPage extends Component{
                             
                             <ProfileImage/>
                             <DropdownSelect elementClick={this.onDropDownElementClick} />
-                            {dropDownList}
                             
+                            <ListGroup pdata={this.state.pdata}/>
                             
+                        {console.log(this.state.pdata)} 
                         </div>
                         <div className='col-lg-6 col-md-12 col-sm-12 col-xs-12'>
-                        <Calendar data={data}/>
+                        <Calendar pdata={this.state.pdata}/>
                         </div>
                         <div className='col-lg-3 col-md-12 col-sm-12 col-xs-12'>
                         <Button/>
