@@ -23,13 +23,13 @@ const Navigationbar = ({onRouteChange}) =>{
                             <li><Link to={'/settings'} className="nav-link">Settings</Link></li>
                             
                         </ul>
-                        <Button onClick={() => onRouteChange('login')} variant="primary">Logout</Button>
+                        <Button  variant="primary">Logout</Button>
                     </nav>
                     <hr />
                     <Switch>
                         <Route exact path='/home' component={LandingPage} />
                         <Route path='/settings' component={Settings} />
-                        <Route path='/login' component={LoginPage} />
+                       
                     </Switch>
                 </div>
             </Router>

@@ -8,11 +8,12 @@ class Main extends React.Component {
         super();
         this.state = {
             
-            route: 'login'
+            route: ''
         }
     }
 
     componentDidMount() {
+        this.setState({route : 'login'})
         fetch('http://localhost:5000/', {
             headers : { 
               'Content-Type': 'application/json',
@@ -23,10 +24,13 @@ class Main extends React.Component {
         .then(response => response.json())
         .then(data => {
             console.log('OK');
+        }).catch(error =>{
+            console.log("error ",error);
         })
     }
-    onRouteChange=(route)=> {
-        this.setState({route : route});
+
+    onRouteChange=(s)=> {
+        this.setState({route : s});
     }
 
     render() {

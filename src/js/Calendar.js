@@ -15,18 +15,10 @@ import {
   AppointmentForm,
   ViewSwitcher
 } from '@devexpress/dx-react-scheduler-material-ui';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Fragment } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextField from '@material-ui/core/TextField';
 import 'tachyons';
-import { Button } from '@material-ui/core';
 
-
-// import appointments from '../../../demo-data/today-appointments';
 // Calendaar Styling
 const style = theme => ({
   todayCell: {
@@ -59,65 +51,65 @@ const style = theme => ({
 
 // const FormLayout=()=>{
 //   return(
-  
+
 //     <AppointmentForm.BasicLayout>
-      
-      
+
+
 //     </AppointmentForm.BasicLayout>
-    
+
 //   )}
 
 const today = new Date();
 // const allowDrag=({id})=>{
 
 // }
-const allowDrag = () => {return true};
-const appointmentComponent=(props)=>{
-  if (allowDrag){
+const allowDrag = () => { return true };
+const appointmentComponent = (props) => {
+  if (allowDrag) {
     return <Appointments.Appointment {...props} />;
   }
 
 }
 
-const appointmentFormChildren=()=>{}
+const appointmentFormChildren = () => { }
 
 
 export default class Calendar extends React.PureComponent {
-  
+
   constructor(props) {
-    var today= new Date();
+    var today = new Date();
     super(props);
 
     this.state = {
       data: this.props.pdata,
       currentViewName: 'Month',
-      
-      currentDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+
+      currentDate: today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
 
     };
   }
-    
- 
-commitChanges({added,changed, deleted}){
-  this.setState((state)=>{
-      var {data}=state;
+
+
+  commitChanges({ added, changed, deleted }) {
+    this.setState((state) => {
+      var { data } = state;
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
       }
-      if(changed){
-        data=data.map(appointment=>(changed[appointment.id]?{ ...appointment, ...changed[appointment.id] } : appointment));
+      if (changed) {
+        data = data.map(appointment => (changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
         console.log(data)
       }
       if (deleted !== undefined) {
         data = data.filter(appointment => appointment.id !== deleted);
       }
-      return {data};
-  });
-  
+      return { data };
+    });
 
-}
-  
+
+  }
+
   render() {
     const { data, currentDate } = this.state;
 
@@ -125,46 +117,46 @@ commitChanges({added,changed, deleted}){
       <Fragment>
         {/* {console.log(this.state.data)} */}
         <Paper >
-          <div className="pa4 br3 shadow-5 "> 
-          {'Calendar Component Loads Properly'}
+          <div className="pa4 br3 shadow-5 ">
+            {'Calendar Component Loads Properly'}
           </div>
-          
+
           <Scheduler
-          height={'auto'}
-          data={data}
+            height={'auto'}
+            data={data}
           >
-            
+
             <ViewState
-            defaultCurrentDate={currentDate}/>
-            <EditingState 
-            onCommitChanges={this.commitChanges}
+              defaultCurrentDate={currentDate} />
+            <EditingState
+              onCommitChanges={this.commitChanges}
             />
             <IntegratedEditing />
             <DayView
               startDayHour={6}
               endDayHour={22}
-              
+
             />
             <WeekView
-            startDayHour={6}
-            endDayHour={22}
+              startDayHour={6}
+              endDayHour={22}
             />
             <MonthView />
             <Toolbar />
             <DateNavigator />
             <TodayButton />
-            <ViewSwitcher 
-            defaultCurrentDate={currentDate}/>
+            <ViewSwitcher
+              defaultCurrentDate={currentDate} />
             <Appointments
               appointmentComponent={appointmentComponent}
             />
             <AppointmentTooltip
-            showCloseButton
-            showOpenButton
+              showCloseButton
+              showOpenButton
             />
             <DragDropProvider
-            allowDrag={allowDrag}
-          />
+              allowDrag={allowDrag}
+            />
             <AppointmentForm
             />
           </Scheduler>
