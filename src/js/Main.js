@@ -7,39 +7,22 @@ class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            
-            route: ''
+            route: 'login'
         }
     }
 
-    componentDidMount() {
-        this.setState({route : 'login'})
-        fetch('http://localhost:5000/', {
-            headers : { 
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-             }
-      
-          })
-        .then(response => response.json())
-        .then(data => {
-            console.log('OK');
-        }).catch(error =>{
-            console.log("error ",error);
-        })
+    onRouteChange = (stateStatus) => {
+        this.setState({ route: stateStatus });
     }
 
-    onRouteChange=(s)=> {
-        this.setState({route : s});
-    }
 
     render() {
         return (
-            <div>    
-                          
-                { this.state.route === 'login'   
-                    ? <LoginPage onRouteChange = {this.onRouteChange}/>    
-                    :  <Navigationbar onRouteChange = {this.onRouteChange}/>     
+            <div>
+
+                {this.state.route === 'login'
+                    ? <LoginPage onRouteChange={this.onRouteChange} />
+                    : <Navigationbar onRouteChange={this.onRouteChange} />
                 }
 
             </div>
