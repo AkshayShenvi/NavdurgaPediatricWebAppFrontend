@@ -38,7 +38,7 @@ class LandingPage extends Component{
                             
                             <ListGroup pdata={this.state.pdata}/>
                             
-                        {console.log(this.state.pdata)} 
+                       
                         </div>
                         <div className='col-lg-6 col-md-12 col-sm-12 col-xs-12'>
                         <Calendar pdata={this.state.pdata}/>

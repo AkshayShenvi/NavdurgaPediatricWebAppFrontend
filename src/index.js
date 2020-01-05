@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './js/serviceWorker';
-import Main from './js/Main';
+import Main from './js/Navigationbar';
 
 import 'tachyons';
 import 'bootstrap/dist/css/bootstrap.min.css';

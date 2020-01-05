@@ -1,28 +1,33 @@
-import React, { Fragment } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import React from 'react';
 import Treatment from './Treatment'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button'
+import createBrowserHistory from 'history/createBrowserHistory';
 
 const Settings = () => {
+    const history = createBrowserHistory();
     return (
-        <Fragment>
-        <Navbar bg="primary" variant="dark">
-            <Navbar.Brand href="#treatment">Treatment</Navbar.Brand>
-            <Nav className="mr-auto">
-                <Nav.Link  href="#test">Update Treatment</Nav.Link>
-                <Nav.Link href="#pricing">Add Treatment</Nav.Link>
-            </Nav>
-            {/* <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-light">Search</Button>
-            </Form> */}
-        
-        </Navbar>
-        <Treatment/>
-        </Fragment>
+        <Router history={history}>
+                <div>
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+                        <ul className="navbar-nav mr-auto">
+                            <li><Link to={'/treatments'} className="nav-link"> Treatments </Link></li>
+                            <li><Link to={'/doctor'} className="nav-link"> Doctors </Link></li>
+                            
+                        </ul>
+                    </nav>
+                    <hr />
+                    <Switch>
+                        <Route exact path='/treatments' component={Treatment} />
+                        <Route path='/doctor' component={Settings} />
+                        
+                    </Switch>
+                   
+                </div>
+        </Router>
     );
 
 }
-  
+
 export default Settings;
-        
+
