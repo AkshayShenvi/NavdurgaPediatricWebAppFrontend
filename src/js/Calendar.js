@@ -48,7 +48,7 @@ const style = theme => ({
 });
 
 
-const today = new Date();
+
 
 const allowDrag = () => { return true };
 const appointmentComponent = (props) => {
@@ -60,6 +60,30 @@ const appointmentComponent = (props) => {
 
 const appointmentFormChildren = () => { }
 
+const convertMonth=(m)=>{
+  var month = new Array();
+  month[0] = "01";
+  month[1] = "02";
+  month[2] = "03";
+  month[3] = "04";
+  month[4] = "05";
+  month[5] = "06";
+  month[6] = "07";
+  month[7] = "08";
+  month[8] = "09";
+  month[9] = "10";
+  month[10] = "11";
+  month[11] = "12";
+  return month[m.getMonth()]
+}
+const convertDay=(day)=>{
+  if (day.length<2){
+      return "0"+day;
+  }
+  else{
+      return day;
+  }
+}
 
 export default class Calendar extends React.PureComponent {
 
@@ -78,7 +102,9 @@ export default class Calendar extends React.PureComponent {
 
   getRange = (date, view) => {
     if (view === "Day") {
-      return { startDate: date, endDate: date };
+      var tomorrow=new Date(date);
+      tomorrow.setDate(tomorrow.getDate()+1);
+      return { startDate: String(date.getFullYear())+"-"+String(convertMonth(date))+"-"+convertDay(String(date  .getDate())), endDate: String(tomorrow.getFullYear())+"-"+String(convertMonth(tomorrow))+"-"+convertDay(String(tomorrow.getDate())) };
     }
     if (view === "Week") {
       let firstDay = date.getDate() - date.getDay();
@@ -92,6 +118,8 @@ export default class Calendar extends React.PureComponent {
 
   currentViewChange = currentView => {
     let currentDate = this.state.currentDate;
+    console.log("Current Date")
+    console.log(currentDate)
     let range = this.getRange(currentDate, currentView);
     this.setState({
       currentView,

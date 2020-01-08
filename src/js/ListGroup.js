@@ -47,10 +47,11 @@ class ListGroup extends React.Component {
             //     {console.log(this.state.data)}
             // </Fragment>
             <Fragment>
-                {console.log(this.state.data)}
+                
                 <ul className="list-group">
                     {Object.keys(this.state.data).map((keys,index)=>(
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
+                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                        
                         {this.state.data[keys].DoctorName}
                         
                         {/* {this.state.data[1].DoctorName} */}
