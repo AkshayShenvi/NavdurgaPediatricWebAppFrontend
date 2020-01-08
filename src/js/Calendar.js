@@ -48,21 +48,8 @@ const style = theme => ({
 });
 
 
-
-// const FormLayout=()=>{
-//   return(
-
-//     <AppointmentForm.BasicLayout>
-
-
-//     </AppointmentForm.BasicLayout>
-
-//   )}
-
 const today = new Date();
-// const allowDrag=({id})=>{
 
-// }
 const allowDrag = () => { return true };
 const appointmentComponent = (props) => {
   if (allowDrag) {
@@ -77,18 +64,56 @@ const appointmentFormChildren = () => { }
 export default class Calendar extends React.PureComponent {
 
   constructor(props) {
-    var today = new Date();
     super(props);
 
     this.state = {
       data: this.props.pdata,
-      currentViewName: 'Month',
-
-      currentDate: today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+      currentDate: new Date(),
+      currentView: "Day",
+      range: this.getRange(new Date(), "Day")
 
     };
+
   }
 
+  getRange = (date, view) => {
+    if (view === "Day") {
+      return { startDate: date, endDate: date };
+    }
+    if (view === "Week") {
+      let firstDay = date.getDate() - date.getDay();
+      let lastDay = firstDay + 6;
+      return {
+        startDate: new Date(date.setDate(firstDay)),
+        endDate: new Date(date.setDate(lastDay))
+      };
+    }
+  };
+
+  currentViewChange = currentView => {
+    let currentDate = this.state.currentDate;
+    let range = this.getRange(currentDate, currentView);
+    this.setState({
+      currentView,
+      range
+    });
+    alert(currentDate);
+    alert(currentView);
+    console.log(range);
+  };
+
+  currentDateChange = currentDate => {
+    console.log(currentDate);
+    let currentView = this.state.currentView;
+    let range = this.getRange(currentDate, currentView);
+    this.setState({
+      currentDate,
+      range
+    });
+    alert(currentDate);
+    alert(currentView);
+    console.log(range);
+  };
 
   commitChanges({ added, changed, deleted }) {
     this.setState((state) => {
@@ -111,7 +136,7 @@ export default class Calendar extends React.PureComponent {
   }
 
   render() {
-    const { data, currentDate } = this.state;
+    const { data, currentDate, currentView } = this.state;
 
     return (
       <Fragment>
@@ -127,7 +152,11 @@ export default class Calendar extends React.PureComponent {
           >
 
             <ViewState
-              defaultCurrentDate={currentDate} />
+              currentDate={currentDate}
+              currentView={currentView}
+              onCurrentDateChange={this.currentDateChange}
+              onCurrentViewNameChange={this.currentViewChange} />
+
             <EditingState
               onCommitChanges={this.commitChanges}
             />

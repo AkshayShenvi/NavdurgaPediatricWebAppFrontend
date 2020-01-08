@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../img/logo.png';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route, Link } from "react-router-dom";
 import Settings from './Settings'
 import LandingPage from './LandingPage';
 import Button from 'react-bootstrap/Button'
