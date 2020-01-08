@@ -16,7 +16,8 @@ class LandingPage extends Component{
     constructor(props){
         super(props)
         this.state={
-            pdata:data
+            pdata:data,
+            view:'DAY'
         }
     }
     

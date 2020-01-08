@@ -117,9 +117,9 @@ export default class Calendar extends React.PureComponent {
       <Fragment>
         {/* {console.log(this.state.data)} */}
         <Paper >
-          <div className="pa4 br3 shadow-5 ">
+          {/* <div className="pa4 br3 shadow-5 ">
             {'Calendar Component Loads Properly'}
-          </div>
+          </div> */}
 
           <Scheduler
             height={'auto'}

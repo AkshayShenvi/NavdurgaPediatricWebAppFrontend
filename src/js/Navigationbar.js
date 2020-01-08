@@ -15,7 +15,7 @@ const Navigationbar = ({onRouteChange}) =>{
                     <title>Navdurga Fracture And Accident Center</title>
                     <nav className="navbar navbar-expand-lg navbar-light bg-light">
                         <ul className="navbar-nav mr-auto">
-                            <li><Link to={'#'} className="navbar-brand"> 
+                            <li><Link to={'/'} className="navbar-brand"> 
                                 <img src={Logo} width="30" height="30" alt="" />
                             </Link>
                             </li>
