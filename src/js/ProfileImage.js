@@ -5,7 +5,7 @@ import '../css/ProfileImage.css';
 const ProfileImage=()=>{
     return(
         <Fragment>
-            <img src={Logo} alt="Profile Image" className="profImg"/>
+            <img src={Logo} alt="Profile" className="profImg"/>
         </Fragment>
     );
 }

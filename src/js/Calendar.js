@@ -18,6 +18,7 @@ import {
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Fragment } from 'react';
 import 'tachyons';
+import moment from 'moment';
 
 // Calendaar Styling
 const style = theme => ({
@@ -60,30 +61,30 @@ const appointmentComponent = (props) => {
 
 const appointmentFormChildren = () => { }
 
-const convertMonth=(m)=>{
-  var month = new Array();
-  month[0] = "01";
-  month[1] = "02";
-  month[2] = "03";
-  month[3] = "04";
-  month[4] = "05";
-  month[5] = "06";
-  month[6] = "07";
-  month[7] = "08";
-  month[8] = "09";
-  month[9] = "10";
-  month[10] = "11";
-  month[11] = "12";
-  return month[m.getMonth()]
-}
-const convertDay=(day)=>{
-  if (day.length<2){
-      return "0"+day;
-  }
-  else{
-      return day;
-  }
-}
+// const convertMonth=(m)=>{
+//   var month = new Array();
+//   month[0] = "01";
+//   month[1] = "02";
+//   month[2] = "03";
+//   month[3] = "04";
+//   month[4] = "05";
+//   month[5] = "06";
+//   month[6] = "07";
+//   month[7] = "08";
+//   month[8] = "09";
+//   month[9] = "10";
+//   month[10] = "11";
+//   month[11] = "12";
+//   return month[m.getMonth()]
+// }
+// const convertDay=(day)=>{
+//   if (day.length<2){
+//       return "0"+day;
+//   }
+//   else{
+//       return day;
+//   }
+// }
 
 export default class Calendar extends React.PureComponent {
 
@@ -101,33 +102,46 @@ export default class Calendar extends React.PureComponent {
   }
 
   getRange = (date, view) => {
+    
     if (view === "Day") {
+      
       var tomorrow=new Date(date);
       tomorrow.setDate(tomorrow.getDate()+1);
-      return { startDate: String(date.getFullYear())+"-"+String(convertMonth(date))+"-"+convertDay(String(date  .getDate())), endDate: String(tomorrow.getFullYear())+"-"+String(convertMonth(tomorrow))+"-"+convertDay(String(tomorrow.getDate())) };
+      return {  startDate: moment(date).format('YYYY-MM-DD'),//String(date.getFullYear())+"-"+String(convertMonth(date))+"-"+convertDay(String(date  .getDate())), 
+                endDate: moment(date).add(1,'days').format('YYYY-MM-DD')//String(tomorrow.getFullYear())+"-"+String(convertMonth(tomorrow))+"-"+convertDay(String(tomorrow.getDate())) 
+              };
     }
     if (view === "Week") {
-      let firstDay = date.getDate() - date.getDay();
-      let lastDay = firstDay + 6;
+      let firstDay = moment(date).startOf('week');//date.getDate() - date.getDay();
+      let lastDay = moment(date).endOf('week');//firstDay + 6;
+      //console.log("Calendar ")
+      //console.log(typeof firstDay.format('YYYY-MM-DD'),lastDay.format('YYYY-MM-DD'))
       return {
-        startDate: new Date(date.setDate(firstDay)),
-        endDate: new Date(date.setDate(lastDay))
+        startDate: firstDay.format('YYYY-MM-DD'),//new Date(date.setDate(firstDay)),
+        endDate: lastDay.format('YYYY-MM-DD')//new Date(date.setDate(lastDay))
       };
+    }
+    if(view==="Month"){
+      return{
+        startDate: moment(date).startOf('month').format('YYYY-MM-DD'),
+        endDate: moment(date).endOf('month').format('YYYY-MM-DD')
+      }
     }
   };
 
   currentViewChange = currentView => {
     let currentDate = this.state.currentDate;
-    console.log("Current Date")
-    console.log(currentDate)
+    // console.log("Current Date")
+    // console.log(currentDate)
     let range = this.getRange(currentDate, currentView);
     this.setState({
       currentView,
       range
     });
-    alert(currentDate);
-    alert(currentView);
-    console.log(range);
+    this.props.getDatesAndView(range,currentView)
+    // alert(range.startDate+"-"+range.endDate);
+    // alert(currentView);
+    // console.log(range);
   };
 
   currentDateChange = currentDate => {
@@ -138,9 +152,10 @@ export default class Calendar extends React.PureComponent {
       currentDate,
       range
     });
-    alert(currentDate);
-    alert(currentView);
-    console.log(range);
+    this.props.getDatesAndView(range,currentView)
+    // alert(currentDate);
+    // alert(currentView);
+    // console.log(range);
   };
 
   commitChanges({ added, changed, deleted }) {
@@ -168,11 +183,9 @@ export default class Calendar extends React.PureComponent {
 
     return (
       <Fragment>
-        {/* {console.log(this.state.data)} */}
+        
         <Paper >
-          {/* <div className="pa4 br3 shadow-5 ">
-            {'Calendar Component Loads Properly'}
-          </div> */}
+          
 
           <Scheduler
             height={'auto'}
