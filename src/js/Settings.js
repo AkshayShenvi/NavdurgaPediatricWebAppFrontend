@@ -1,5 +1,6 @@
 import React from 'react';
-import Treatment from './Treatment'
+import Treatment from './Treatment';
+import Doctor from './Doctor';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button'
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -19,7 +20,7 @@ const Settings = () => {
                     <hr />
                     <Switch>
                         <Route exact path='/treatments' component={Treatment} />
-                        <Route path='/doctor' component={Settings} />
+                        <Route path='/doctor' component={Doctor} />
                         
                     </Switch>
                    

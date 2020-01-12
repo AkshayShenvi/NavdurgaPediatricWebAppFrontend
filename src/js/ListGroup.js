@@ -54,16 +54,16 @@ class ListGroup extends React.Component {
                 console.log(error);
             })
     }
-    static getDerivedStateFromProps(nextProps,prevState){
-        if(nextProps.view !== prevState.view){
-            this.setState({view:nextProps.view,
-                            startDate:nextProps.startDate,
-                            endDate:nextProps.endDate})
-        }
-        else{
-            return null
-        }
-    }
+    // static getDerivedStateFromProps(nextProps,prevState){
+    //     if(nextProps.view !== prevState.view){
+    //         this.setState({view:nextProps.view,
+    //                         startDate:nextProps.startDate,
+    //                         endDate:nextProps.endDate})
+    //     }
+    //     else{
+    //         return null
+    //     }
+    // }
     render() {
         if(this.isEmpty(this.state.data)){
             return(
