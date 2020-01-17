@@ -95,7 +95,7 @@ class DoctorsTable extends React.Component{
         .then((responseJson)=>{
             console.log(responseJson)
             if(responseJson.id === id){
-                alert("Doctor Deleted Successfully");
+                // alert("Doctor Deleted Successfully");
                 this.getAllDoctors();
             }else{
                 alert("User not deleted!!");
